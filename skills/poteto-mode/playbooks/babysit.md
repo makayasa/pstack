@@ -1,5 +1,7 @@
 ### Babysit
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Status inspection is read-only by default. Remote fixes, replies, retargets, and pushes require task-specific permission. Merge and force-push need separate permission. GitLab uses installed `glab` commands, not the GitHub watcher. Existing bot comments may be assessed, but Bugbot installation is unsupported. All required owners or reviewers are visible Pi workers created by the coordinator.
+
 **You own the merge frontier. Declare a mode, clear one PR at a time, stop where the human's call begins.** This playbook replaces Cursor's built-in babysit skill for these requests, so do not route there even though its description matches the same words. A request to land or ship is `playbooks/shipping.md`, which begins where this playbook ends.
 
 Babysitting starts when the user asks for it, which is normally once a phase or a whole stack is built, not when a PR opens. Finish the stack, get it green here, then land it through Shipping.

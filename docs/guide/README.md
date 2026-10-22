@@ -1,5 +1,7 @@
 # The pstack guide
 
+This fork targets Pi + herdr. Start with [Pi setup](01-setup.md) and the [runtime contract](../../skills/poteto-mode/references/pi-herdr.md). Commands use `/skill:name`. Required workers are visible Pi sessions on one machine. Remote writes are opt-in. Cursor-only instructions in retained upstream examples are unsupported, not setup steps for this fork.
+
 pstack works best when you stop micromanaging the agent. You describe what you want and how you'll know it's done. `/poteto-mode` picks the playbook, runs the other skills as the steps need them, and shows you the evidence. This guide teaches that habit with realistic prompts.
 
 Here's what you'll learn:

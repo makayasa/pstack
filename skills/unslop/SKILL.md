@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Unslop
 
+Read [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md) before acting.
+
 Edit text to remove AI patterns. Scan for the patterns below, then rewrite. Preserve meaning and match the intended tone.
 
 ## Patterns to detect and fix

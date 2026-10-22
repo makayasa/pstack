@@ -1,5 +1,7 @@
 ### Authoring or modifying a skill
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Follow the Agent Skills format. Pi does not provide Cursor's create-skill command. Publication is permission-gated.
+
 **You own the skill's voice.**
 
 1. Use your skill-authoring skill: **create-skill** in Cursor (built in), or Anthropic's `skill-creator` elsewhere. With neither, follow the Agent Skills format at agentskills.io.

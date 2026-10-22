@@ -2,7 +2,9 @@
 
 Invoked at the end of every other playbook.
 
-**Worktree.** Work from a git worktree off main. Subagents inherit it. Multiple `Task` calls on the same branch each get their own worktree, or `git fetch && git reset --hard origin/<branch>` between them. Dirty branch with unrelated work: patch out, fresh worktree, apply. Snarled worktree: reset from main, redo minimally.
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Without task-specific publication permission, stop after local checks and commits. Creating a PR or MR permits its necessary branch push, not merge, deploy, force-push, or cleanup. GitHub uses `gh`; GitLab uses `glab`. Inspect installed help and read back the created target before reporting success.
+
+**Worktree.** Each writing worker uses its own branch and worktree from an explicit base SHA. Do not reset, stash, or discard unrelated work. Review worker commits before local integration. Keep completed sessions and worktrees until cleanup is requested.
 
 **Commits.** Commit liberally. Rebase into small, ordered commits before opening PRs. Each commit is a future PR: landable, ordered to tell the story. Amend when the fix belongs in a just-made commit. New commit when separable. Commit bodies don't restate the subject.
 

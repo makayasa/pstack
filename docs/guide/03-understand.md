@@ -1,5 +1,7 @@
 # Understand the code before changing it
 
+For this fork, use `/skill:name` in Pi and follow [Pi + herdr runtime](../../skills/poteto-mode/references/pi-herdr.md). All required explorers, investigators, and explainers are visible Pi workers created by the coordinator. Missing herdr blocks those roles instead of replacing them with hidden or sequential agents.
+
 Editing code you don't understand is how subtle regressions ship, and that's as true for the agent as for you. Agents usually fail in one of two ways. They misread what you want, or they don't have the context to do the work right. [What goes in a prompt](./02-poteto-mode.md#what-goes-in-a-prompt) handles the first. This page handles the second.
 
 pstack gives you four ways in. `/how` explains what the code does now. `/why` digs up the reasons it's shaped that way. `/teach` blends both into one explanation. `/recall` rebuilds your own recent context on a topic. Each one also makes the agent explain itself in words you can check. That's how you supervise an agent that may know the code better than you do.

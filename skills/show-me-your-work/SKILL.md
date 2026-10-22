@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Show me your work
 
+Read [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md) before acting. It also applies to delegated skills and direct invocations.
+
 Keep one canonical log.
 
 ## The format

@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Technical writing
 
+Read [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md) before acting.
+
 Write so a tired engineer understands on the first read. Apply all four layers.
 
 Three rules sit above the layers:

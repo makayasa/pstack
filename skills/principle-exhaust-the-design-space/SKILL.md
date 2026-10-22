@@ -6,4 +6,6 @@ disable-model-invocation: true
 
 # Exhaust the Design Space
 
+Apply within [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md).
+
 It also applies to product design decisions where user experience depends on feel, not logic.

@@ -1,5 +1,7 @@
 # Build the change and clean the diff
 
+Use `/skill:name` in Pi and follow [Pi + herdr runtime](../../skills/poteto-mode/references/pi-herdr.md). Writers and comment reviewers use visible Pi sessions with isolated worktrees. Cursor's deslop tool is not assumed. Reread the diff directly. PR or MR publication is opt-in.
+
 The build playbooks share one discipline. Say what you observed, and let the playbook demand the evidence. This page shows what to put in the prompt for each common build task, then the cleanup habit that keeps diffs reviewable.
 
 ## Prompt each build playbook with what you know

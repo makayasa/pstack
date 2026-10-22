@@ -8,6 +8,8 @@ color: yellow
 
 # Poteto mode
 
+Read [Pi + herdr runtime](references/pi-herdr.md) before acting. Its delegation, model, permission, takeover, and retention rules apply to every playbook and worker.
+
 Bundled skills live at `../<name>/SKILL.md` from this file, so put this file's absolute path in every `poteto-agent` prompt.
 
 ## Non-negotiables
@@ -80,21 +82,21 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Autonomy
 
-**Just do it.** Use any MCP tool. Reversible work and external actions (team chat, ticket updates, kicking off evals) proceed without asking.
+**Local by default.** Perform scoped local reads, edits, tests, commits, and reviewed integration. Remote writes require task-specific permission. A PR or MR request includes its necessary branch push, not merge or deploy.
 
-**Always pause** for irreversible writes: force-push to shared branches, deploys, data deletion, customer messages.
+**Always pause** for destructive actions, force-push, deploys, data deletion, and customer messages. Do not publish merely because a playbook ends with Opening a PR.
 
-**Session overrides:** "Don't stop" / "going to bed" / "run until done" / "be fully autonomous" → keep going.
+**Session overrides:** "Don't stop", "going to bed", "run until done", or "be fully autonomous" means continue within the granted scope. It does not grant remote or destructive permissions.
 
 **No is an acceptable answer.** Asked whether to do something, invited to add scope, or shown an approach, reply with your real judgment. Decline, push back, or say "this doesn't earn its place" when true. A recommendation is a judgment, not a validation. Agreement is not the default, candor over sycophancy.
 
 ## Subagents
 
-**Use `subagent_type: "poteto-agent"` for any subagent you spawn inside a playbook step** (code-writing delegates, ad-hoc helpers). The chat that receives `/poteto-mode` runs the playbook. Never spawn a `poteto-agent` to run the playbook itself. Routed workflow skills (`how`, `why`, `interrogate`, `reflect`, `swarm`) set their own `subagent_type` for diverse-model review. Respect what the skill prescribes, don't override to `poteto-agent`.
+Only the coordinator creates interactive Pi workers through herdr. Playbook coding workers read this file and their scoped brief. Routed skills keep their own prompts and per-role model choices. Workers request nested delegation from the coordinator instead of creating children.
 
-**Defaults for every `Task` call.** `run_in_background: true`, agent mode (readonly strips MCP), file pointers not inlined context, explicit model per role (configurable via `/setup-pstack`. Defaults `grok-4.7-xhigh-fast` for code, `claude-opus-5-5-xhigh` for prose and judgment). Code delegates tier by difficulty. The hardest changes (cross-cutting design, gnarly concurrency, subtle algorithms) go to your strongest judgment model (`claude-opus-5-5-xhigh`), whether the task needs judgment on vague intent or is a precisely specified sequence of steps to execute to the letter. Trivial mechanical edits go to your fast code model. Per-role lines in the `/setup-pstack` rule override these defaults and the model choices in the routed skills (`how`, `why`, `arena`, `swarm`, `architect`, `interrogate`, `reflect`). A role with no line keeps its default, and a role line of `inherit-parent` or `auto` runs that role on the parent chat model (omit Task `model`). Each code playbook's configured model comes from its line (`feature, refactoring`, `bug-fix`, `perf-issue`, or `hillclimb`), and the hardest changes read `hardest tasks`. Prose and judgment read `judgment and prose`.
+Read the configured role from `~/.agents/pstack-models.md`. Code playbooks use `feature, refactoring`, `bug-fix`, `perf-issue`, or `hillclimb`. Hardest changes use `hardest tasks`. Prose and judgment use `judgment and prose`. Routed skills use their own role lines. Missing settings require `/skill:setup-pstack`. Resolve aliases to the coordinator's exact model. Never silently fall back to another model.
 
-**Match the model to the job.** Before each spawn, start from the role's line or default and pick the reasoning level and speed the job needs. The `/setup-pstack` budget sets each role's starting level, xhigh by default. Raise it one step, up to max, for the hardest or subtlest work. Lower it one step for judgment and two or more steps for routine work. Use fast mode only when the job is urgent, meaning CI or trunk is red or a person is blocked on the result right now. Otherwise use standard speed, the same slug without `-fast`. Verification is the exception and stays on the `swarm workers` model and speed (`grok-4.7-xhigh-fast` by default). Change only the effort level and whether the slug is fast, and keep the family the role names, so a diverse panel stays diverse. If the family has no slug at that level and speed, use its nearest slug. A role on `auto` or `inherit-parent` stays on the parent model. If your subagent tool rejects the adjusted slug, do not try another adjusted slug. Use the role's line or default and say so.
+Budget sets the starting reasoning level. Keep provider, model identity, and panel count fixed unless the user approves a change. Use only reasoning levels supported by the selected model. Verification uses `swarm workers`. Do not encode reasoning or speed into invented model IDs.
 
 You own every subagent's work. Review the diff and write your own summary, don't pass through what it said. A second opinion is the same prompt against a different model. Agreement is high-signal.
 
@@ -102,15 +104,13 @@ You own every subagent's work. Review the diff and write your own summary, don't
 
 ## Harness
 
-pstack was written for Cursor. In another harness (Claude Code, Codex, Pi, OpenCode, and others), read Cursor-specific instructions in this skill, its playbooks, and the routed skills through these mappings. If you can't tell which harness you are, check which of the paths below exist.
+This fork targets Pi inside herdr. [Pi + herdr runtime](references/pi-herdr.md) owns command syntax, environment checks, visible delegation, layout, takeover, and retention. Directly invoked skills load it too.
 
-- **Subagents.** `Task` means your subagent tool: `Agent` in Claude Code (`subagent_type: general-purpose`), `task` in OpenCode (`subagent_type: general`), `spawn_agent` in Codex. Drop parameters your tool doesn't have. `environment: "cloud"` means a Cursor cloud agent. Elsewhere, run that agent locally in its own worktree. If your harness has no subagent tool, as in Pi without an extension, do each delegated step yourself, one after another.
-- **`poteto-agent`.** Where it isn't registered as a subagent, spawn a general subagent whose prompt starts with: "Read <this file's absolute path> in full, including its Principles section, before any work." Then give the task.
-- **Model settings.** Cursor loads `~/.cursor/rules/pstack-models.mdc` and Claude Code loads `~/.claude/rules/pstack-models.md` automatically. Elsewhere, `/setup-pstack` writes `~/.agents/pstack-models.md`. Read it at task start if it exists. If a model name doesn't resolve in your harness, use its closest equivalent. Cursor puts the reasoning level and speed in the model name (`-xhigh`, `-fast`). Elsewhere, set the level with your subagent tool's effort option if it has one (`effort` on Claude Code's `Agent`), and skip what your tool can't set.
-- **Transcripts.** Read only the active workspace's sessions, never other projects'. Cursor: the `agent-transcripts/` directory the system prompt names. Claude Code: `~/.claude/projects/<slug>/*.jsonl`, where `<slug>` is the workspace path with every character that isn't a letter or digit turned into "-". Pi: `~/.pi/agent/sessions/--<slug>--/*.jsonl`, where `<slug>` is the workspace path with the leading slash dropped and each "/" turned into "-". Codex: `~/.codex/sessions/YYYY/MM/DD/rollout-*.jsonl`, keeping files whose first line has `payload.cwd` equal to the workspace path. OpenCode: `~/.local/share/opencode/storage/`.
-- **Skill folders.** Project: `.cursor/skills/` (Cursor), `.claude/skills/` (Claude Code), `.pi/skills/` (Pi), `.agents/skills/` (Codex, OpenCode, and others). User: `~/.cursor/skills/`, `~/.claude/skills/`, `~/.pi/agent/skills/`, `~/.codex/skills/`, `~/.agents/skills/`.
-- **Questions.** `AskQuestion` means your structured-question tool: `AskUserQuestion` in Claude Code, `question` in OpenCode. Without one, ask in chat with numbered options.
-- **Tools pstack doesn't ship.** `create-skill` is Cursor's built-in skill-authoring skill. Elsewhere, use Anthropic's `skill-creator` or follow the Agent Skills format at agentskills.io. `deslop`, `control-cli`, and `control-ui` come from Cursor's `cursor-team-kit` plugin. Without `deslop`, reread the diff before commit and cut AI slop yourself. Without the control skills, drive the app with the automation you have: Playwright or a CDP browser for web and Electron, tmux or a PTY for CLIs and TUIs. `/loop` is built into Cursor and Claude Code. Without it, wait between checks with a timed shell command.
+- **Skills.** Invoke `/skill:name`. Resolve bundled files from the loaded skill directory. Use Pi's `.pi/skills/` or Agent Skills `.agents/skills/` locations.
+- **Transcripts.** Read only the active task's Pi sessions. Confirm cwd and opening prompt, and account for explicit session directories and worker worktrees.
+- **Questions.** Ask numbered questions in chat. Do not assume Cursor's question or todo tools exist. Keep a Markdown checklist when no todo tool is available.
+- **Authoring.** Follow the Agent Skills format. Before commit, reread the diff and remove unnecessary code and prose. Browser and CLI verification use installed automation tools, not assumed Cursor control skills.
+- **Unsupported.** Cursor cloud agents, Custom Modes, Automations, and Bugbot installation have no replacement here. State the gap. Do not add a daemon or extension for them.
 
 ## Writing the reply
 

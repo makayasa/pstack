@@ -1,0 +1,12 @@
+{
+  "name": "pstack-pi-herdr",
+  "private": true,
+  "license": "MIT",
+  "keywords": ["pi-package"],
+  "pi": {
+    "skills": ["./skills"]
+  },
+  "scripts": {
+    "test": "python3 scripts/check-pi-herdr.py"
+  }
+}

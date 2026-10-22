@@ -1,5 +1,7 @@
 ### Investigation
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Required investigators are visible Pi workers created by the coordinator with scoped read access. Missing herdr or model settings leave delegation blocked.
+
 **You own the answer. Plan, route, write.**
 
 Investigation requests are read-only. They produce a cited explanation or a recommendation, not a code change.

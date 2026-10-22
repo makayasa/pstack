@@ -1,5 +1,7 @@
 ### Perf issue
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. The coordinator starts visible Pi workers with `perf-issue` from settings. Writers get isolated worktrees. No hardcoded fallback model.
+
 **You own the measurement story. Plan, review, verify the numbers.** Tie every fix to a measurement, don't read source instead of measuring.
 
 1. Capture a baseline trace via the matching control skill. Vet the baseline, and each later number, with the **benchmark-checklist** skill.

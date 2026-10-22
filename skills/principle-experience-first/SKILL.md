@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Experience First
 
+Apply within [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md).
+
 When implementation convenience conflicts with user delight, choose delight.
 
 - Every feature, control, and option must be justified

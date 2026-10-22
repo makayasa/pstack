@@ -1,5 +1,7 @@
 # benny automation intent
 
+This upstream automation pack is unsupported in this Pi + herdr fork. Stop before setup, copying files, changing settings, or creating automations. Explain that Cursor Automations is required. Retain the material only for reference.
+
 ## what i want to automate
 
 i want two cursor automations that work together in one slack issue channel.

@@ -1,5 +1,7 @@
 ### Prototype
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. The coordinator creates required Pi workers through herdr. Each writing candidate gets a branch and worktree. Keep candidates and sessions for manual inspection instead of deleting automatically.
+
 **You own the design decision, not the code. The prototype is a throwaway instrument. The real build follows Feature.**
 
 The one playbook where the Laziness Protocol's "smallest change" and the verification bar invert. Speed over polish, code quality does not matter, no planning. The rigor is in picking the right design cheaply. Propose variations the user didn't ask for, throw an approach away and try another.

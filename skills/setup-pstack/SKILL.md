@@ -1,84 +1,70 @@
 ---
 name: setup-pstack
-description: Configure which models pstack uses per role and at what reasoning budget. Detects your available models and writes an always-applied rule that overrides the skill defaults. Use for /setup-pstack, "configure pstack models", "pstack budget", or changing pstack's model choices.
+description: Configure pstack models per role and reasoning budget in Pi.
 ---
 
 # Setup pstack
 
-Write pstack's model settings, one model per role:
+Read [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md) first. This skill configures models. It does not create workers or require herdr control access.
 
-- **Cursor:** `~/.cursor/rules/pstack-models.mdc`, an always-applied rule.
-- **Claude Code:** `~/.claude/rules/pstack-models.md`. Claude Code loads every file in `~/.claude/rules/` into each new session.
-- **Every other harness** (Codex, Pi, OpenCode, and others): `~/.agents/pstack-models.md`. These harnesses don't load it on their own, so pstack skills read this file when they pick a model.
+Keep pstack's budget-first setup and per-role mapping. Write `~/.agents/pstack-models.md`. Do not modify Pi's global model defaults, credentials, installed extensions, or settings. Pi does not automatically load this Markdown file. Each pstack skill reads it before delegation.
 
-"The settings file" below means the file for your harness. In Claude Code, if that file is missing, read `~/.agents/pstack-models.md` instead, where older versions of this skill wrote it.
+## Detect and read
 
-## Steps
+1. Inspect `pi --help` and run `pi --list-models`.
+2. Treat each provider and exact model ID as a pair. Preserve slashes, colons, and brackets in IDs. Catalog presence does not prove authentication. Do not print secrets or launch a paid model probe without a reason.
+3. Read existing pstack settings if present. Preserve configured model families, panel lists, and aliases on reruns. Show obsolete role lines before removing them. Legacy Cursor slugs need a confirmed Pi mapping, not a string rewrite.
 
-### 1. Detect available models
+## Choose budget and models
 
-Enumerate the model slugs you can pass to a subagent in this session (Cursor `Task`, Claude Code `Agent`, OpenCode `task`, Codex `spawn_agent`). That is the dependable source. If your harness also has a command that lists the user's models, prefer it for completeness (for example `opencode models` or `pi --list-models`). If you cannot detect any, ask the user to paste the slugs they have access to. Never write a real slug you have not confirmed is available. The aliases `inherit-parent` and `auto` are always valid even though they are not detected slugs.
+Ask for a budget with numbered chat options:
 
-### 2. Load current state
+- `unlimited` uses `max` reasoning.
+- `large` uses `xhigh` reasoning.
+- `medium` uses `high` reasoning.
+- `small` uses `medium` reasoning.
 
-The default role-to-model mapping is the rule shape shown in step 5 below. If the settings file already exists, read it and treat its `# budget` line and its role values as the current choices. Otherwise start from those defaults. A line whose role is not in step 5, such as `how critics`, is from a retired role. Drop it.
+`large` matches the upstream starting effort. Budget is not a dollar cap and does not set concurrency. Keep the model identity separate from its thinking level. Before saving, inspect installed Pi model documentation or metadata for supported reasoning levels. If a model cannot honor the requested level, offer the supported level for confirmation. Do not silently downgrade or strip an ID suffix.
 
-### 3. Budget, map, and confirm
+Show every role with its model selection and effective reasoning level. Offer models actually detected in Pi, plus `auto` and `inherit-parent`. Both aliases mean the coordinator's exact current provider and model, not whatever Pi chooses at startup. Resolve that identity before using an alias. If it cannot be established, ask for an explicit model.
 
-**(a) Ask for a budget.** Prefer your structured-question tool (`AskQuestion` in Cursor, `AskUserQuestion` in Claude Code, `question` in OpenCode) over free text. Offer these four options with these exact labels, and name the current budget when the rule records one. With no rule, say that `large` matches the skill defaults.
+Use upstream model families as suggestions, not runnable defaults. Code-oriented roles can use an available code model. Judgment and prose roles can use an available judgment model. The user confirms the mapping. Do not hardcode a provider specific to this machine. For panels, suggest two distinct model families when available. Warn if all entries resolve to one family without silently adding or removing seats.
 
-- `unlimited — max reasoning`
-- `large — xhigh reasoning`
-- `medium — high reasoning`
-- `small — medium reasoning`
+Panel roles accept a list. Each entry creates one worker, including repeated aliases. `arena cross-judge pool` is a pool from which one judge is selected, preferably from a different family than the coordinator. Preserve all role labels below, including labels containing commas. Separate a role from its value at the first `: `, not every colon.
 
-**(b) Apply it.** Build the working table from the skill defaults, and on a re-run keep any role you changed by family, list, or alias (`inherit-parent`, `auto`). `unlimited`, `large`, `medium`, and `small` set the effort token of every real slug, panel entries included, to `max`, `xhigh`, `high`, or `medium`. The effort token is the last token, or the one before a trailing `fast`, on the ladder `max` > `xhigh` > `high` > `medium` > `low`. If the result is not a detected slug, use the same family's detected slug with the highest effort at or below the target, else mark the role as needing a choice. `inherit-parent` and `auto` do not change. So `unlimited` turns `claude-opus-5-5-xhigh` into `claude-opus-5-5-max`. Grok slugs top out at `xhigh`, so under `unlimited` the fallback puts Grok at `xhigh` and keeps `grok-4.7-xhigh-fast` as it is. `large` keeps both defaults. `small` turns them into `claude-opus-5-5-medium` and `grok-4.7-medium-fast`.
+## Validate and save
 
-**(c) Show the roles and confirm.** Show every role with its model, marking any real slug not in the detected set as needing a choice. Also list each line step 2 dropped. Ask whether to accept as-is or change specific roles, offering the detected models plus `inherit-parent` and `auto` (both mean: this role runs on the parent chat model, which is how Auto users stay on Auto) as the options. Prefer your structured-question tool over free text. For panel roles (arena runners, architect runners, interrogate reviewers) the value is a list, and one subagent runs per entry, alias entries included, so the list length sets the count. `arena cross-judge pool` is also a list, but Arena selects one value from it whose model family differs from the parent's when possible. `swarm workers` is the default model for every worker unless a race or comparison assigns another model per arm.
+Validate all explicit provider and model pairs against the detected catalog. Unknown models, unresolved aliases, and unsupported reasoning choices require confirmation before saving. Do not invent replacements. Show the complete mapping and ask the user to confirm once.
 
-### 4. Validate
+Write the file only after confirmation. Use one `# budget` line, one line per role, and optional `# thinking <role>: <level>` lines for confirmed reasoning exceptions. With no exception, a role uses the budget level. An exception covers all seats in that role. If seats cannot share a supported level, ask the user to change the panel or approve a common level.
 
-Every real slug written must be in the detected set. `inherit-parent` and `auto` always pass. If a chosen real slug is not available, stop and ask again.
+This shape uses aliases as placeholders until the user chooses models:
 
-### 5. Write the rule
-
-Write the settings file with a `# budget` line with the chosen label and its target effort, and one line per role, using the same labels poteto-mode uses. In Cursor, include the frontmatter below with `alwaysApply: true`. In other harnesses, write the settings file without the frontmatter (start at the first `#` line). Overwrite the whole file so re-runs stay idempotent. Shape:
-
-```
----
-description: pstack per-role model choices (overrides skill defaults)
-alwaysApply: true
----
-# pstack model configuration. One line per role. Delete a line to fall back to the skill default.
-# `inherit-parent` or `auto` as a value: the role runs on the parent chat model (omit the subagent `model`). Alias entries in a panel list still count toward its fan-out.
+```text
+# pstack model configuration for Pi.
+# Explicit values are provider/model-id. auto and inherit-parent use the coordinator's exact model.
 # budget: large (xhigh)
-feature, refactoring: grok-4.7-xhigh-fast
-bug-fix: grok-4.7-xhigh-fast
-perf-issue: grok-4.7-xhigh-fast
-hillclimb: grok-4.7-xhigh-fast
-judgment and prose: claude-opus-5-5-xhigh
-hardest tasks: claude-opus-5-5-xhigh
-how explorer: grok-4.7-xhigh-fast
-how explainer: claude-opus-5-5-xhigh
-why investigators: grok-4.7-xhigh-fast
-why synthesizer: claude-opus-5-5-xhigh
-reflect tooling: grok-4.7-xhigh-fast
-reflect judgment, divergent, synthesizer: claude-opus-5-5-xhigh
-arena runners: claude-opus-5-5-xhigh, grok-4.7-xhigh-fast
-arena cross-judge pool: claude-opus-5-5-xhigh, grok-4.7-xhigh-fast
-swarm workers: grok-4.7-xhigh-fast
-architect runners: claude-opus-5-5-xhigh, grok-4.7-xhigh-fast
-interrogate reviewers: claude-opus-5-5-xhigh, grok-4.7-xhigh-fast
+feature, refactoring: inherit-parent
+bug-fix: inherit-parent
+perf-issue: inherit-parent
+hillclimb: inherit-parent
+judgment and prose: inherit-parent
+hardest tasks: inherit-parent
+how explorer: inherit-parent
+how explainer: inherit-parent
+why investigators: inherit-parent
+why synthesizer: inherit-parent
+reflect tooling: inherit-parent
+reflect judgment, divergent, synthesizer: inherit-parent
+arena runners: inherit-parent, inherit-parent
+arena cross-judge pool: inherit-parent, inherit-parent
+swarm workers: inherit-parent
+architect runners: inherit-parent, inherit-parent
+interrogate reviewers: inherit-parent, inherit-parent
 ```
 
-### 6. Confirm
+Do not save this placeholder mapping without confirmation. Preserve panel lengths on reruns. Write atomically so an interrupted setup cannot leave a partial mapping. Report the path and any confirmed exceptions. New tasks read the updated file. Already-running workers keep their launch model.
 
-Tell the user which file was written. In Cursor and Claude Code, it applies to new sessions. In other harnesses, pstack skills read `~/.agents/pstack-models.md` when they pick a model. Re-running this skill updates it.
+## Optional project verification
 
-### 7. Offer a verification skill (optional)
-
-Check whether the project has a way to drive the real app for proof (a `verify-*` skill, or an existing harness). If not, offer once: "want a project-local verification skill, so agents can drive the app the way a user does and prove changes work? I can generate one with /create-verification-skill." On yes, invoke `/create-verification-skill` (resolves wherever pstack is installed: workspace, user, or plugin). On no, move on without pushing.
-
-### 8. Offer a formal verification skill (optional)
-
-Check whether the project already has a formal verification skill (a project skill that runs a model checker, a proof, or another verifier against the code). If not, offer once: "want a formal verification skill, so agents can prove a key property of your code holds in every case in scope, not only the cases tests reach? I can generate one with /create-formal-verification-skill." On yes, invoke `/create-formal-verification-skill` (resolves wherever pstack is installed: workspace, user, or plugin). On no, move on without pushing.
+If the project lacks an app verification skill, offer `/skill:create-verification-skill` once. If it lacks a formal verification skill, offer `/skill:create-formal-verification-skill` once. Neither is required to save model settings. Do not generate either without approval.

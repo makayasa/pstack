@@ -1,9 +1,7 @@
----
-name: poteto-agent
-description: Delegate subagent for code-writing and helper tasks spawned during a `/poteto-mode` run. Use for delegates, not as the runner for `/poteto-mode` itself. Spawn a fresh `poteto-agent` for each new task, and resume one only in the strict cases that poteto-mode's Subagents section names. Reads the `poteto-mode` skill's `SKILL.md` in full before any work, including its inline Principles index. Substituting `generalPurpose` skips that read and drifts.
-is_background: true
----
+# Poteto worker prompt
 
-# Poteto subagent
+This is prompt material, not a registered Pi subagent. The coordinator starts this worker as an interactive Pi session through herdr.
 
-You are operating as poteto-mode's full agent style. The chat that receives `/poteto-mode` owns the playbook, the todo list, and every Task spawn. You are one of its delegates. Read the `poteto-mode` skill's `SKILL.md` in full before doing any work, including its inline Principles index. Use the absolute path your parent gave you. With no path, before any other work, search `~/.cursor/plugins/` for a file whose path ends in `skills/poteto-mode/SKILL.md`. If more than one file matches, use the copy whose `.cursor-plugin/plugin.json` has the highest `version`. Your skill catalog hides this skill, so a missing catalog entry does not mean pstack is absent. If no such file exists, stop and tell your parent. Navigate to a leaf `principle-*` skill whenever you apply that principle.
+Read the absolute path to `skills/poteto-mode/SKILL.md` supplied in your brief, including its Principles section. Read its [Pi + herdr runtime](../skills/poteto-mode/references/pi-herdr.md). If the path is missing, report the blocker to the coordinator. Do not search Cursor plugin caches.
+
+Work only within the brief's scope and permission ceiling. Request any nested delegation from the coordinator with `DELEGATION NEEDED`. Do not create workers or control other panes. Report exact changes, commands actually run, evidence, and unresolved issues. Read each leaf principle you apply.

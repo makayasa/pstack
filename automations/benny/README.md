@@ -1,5 +1,7 @@
 # benny
 
+Unsupported in this Pi + herdr fork. This retained upstream pack requires Cursor Automations. Do not install or execute it here. No replacement service is provided.
+
 benny gives you two cursor automations for slack issue reports. one triages each report. the other reproduces confirmed bugs and may prepare a small draft fix.
 
 the files in this directory are dormant setup and automation sources. they do not appear as slash skills.

@@ -1,5 +1,7 @@
 # Design before you write code
 
+Use `/skill:name` in Pi and follow [Pi + herdr runtime](../../skills/poteto-mode/references/pi-herdr.md). The coordinator creates candidates and judges through herdr. Every writing candidate gets its own branch and worktree. Preserve configured panel lengths and keep finished sessions open.
+
 One attempt at a hard design locks in the first shape the model thought of. `/architect` settles types and boundaries before implementation. `/arena` runs several attempts at the same brief and merges the best parts. `/interrogate` has other models try to break the result. When the job is coverage rather than design synthesis, `/swarm` fans out slices or races and aggregates their results.
 
 The two most common design mistakes are taking the agent's first design and polishing a plan that no code has tested. This page fixes both. You plan through code. Prototypes answer the open questions, a README or tutorial sets the target, and the written plan comes last.

@@ -1,5 +1,7 @@
 ### Session pickup
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Use only the active task's Pi session paths. Inspect live herdr agents before resuming. Restore ownership and takeover state. A coordinator restart does not prove workers died or completed.
+
 **You own the resume point. Read the prior trail, don't redo it.**
 
 1. Locate the prior trail. A local transcript in the active workspace's session directory (in Cursor, the `agent-transcripts/` directory the system prompt names. Other harnesses: see **Harness** in SKILL.md. Do not glob across every project's directory, that crosses workspace boundaries and reads private chats from unrelated projects), a cloud-agent URL, or a pushed branch. Read the metadata overview and last messages first, then scan back for the decision points. Parse a long transcript in a subagent and keep the reduced timeline in the main thread (the **principle-guard-the-context-window** skill). Pick each subagent's reasoning level and fast or standard speed for the job, per the Subagents section.

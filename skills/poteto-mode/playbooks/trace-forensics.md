@@ -1,5 +1,7 @@
 ### Trace forensics
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Required analysis workers are visible Pi sessions through herdr. Scope reads to the supplied artifacts. Use installed analysis tools rather than assumed Cursor integrations.
+
 **You own the diagnosis from the artifact.**
 
 Distinct from **Runtime forensics**, which instruments the live process. Here the capture already exists. The artifact is a fixed dataset, read it, don't re-run it. Keep tooling generic: a DevTools or trace parser for cpuprofile and `.json.gz`, a text editor for a spindump, your heap tooling for a heapsnapshot.

@@ -7,6 +7,8 @@ disable-model-invocation: true
 
 # TypeScript best practices
 
+Read [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md) before acting.
+
 Apply the **type-system-discipline** principle skill first.
 
 | Rule | Summary |

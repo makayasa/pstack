@@ -1,5 +1,7 @@
 ### Autopilot-stack
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Only the coordinator creates workers. Owners use isolated local worktrees and request verification workers from the coordinator. Without publication permission, build and verify the stack locally. Do not push, retarget remote requests, force-push, merge, or clean up automatically.
+
 **You own the stack, never the landing. Hand the operator one linear stack of base-chained PRs to review and land.** **Autopilot-full** holds except for how verified work leaves. Each tick re-reads both playbooks from trunk, and this one wins where they differ.
 
 1. **Run Autopilot-full's owners, minus the landing.** Owners report STACK-READY in place of merge-ready. They never rebase onto another branch, trunk included, and never retarget, merge, close a PR, or arm auto-merge, because the root owns the chain's topology and the operator owns the landing. When an item depends on another, its owner branches from that item's branch, not from trunk.

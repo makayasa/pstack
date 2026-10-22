@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Guard the Context Window
 
+Apply within [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md).
+
 **Why:** Context overflow degrades reasoning quality, creates compression artifacts, and halts progress.
 
 **Pattern:**

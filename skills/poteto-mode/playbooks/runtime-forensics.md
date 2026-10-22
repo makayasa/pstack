@@ -1,5 +1,7 @@
 ### Runtime forensics
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Use installed runtime tools and visible Pi workers only where requested. No Cursor control tools are assumed. Do not mutate an unrelated process or approve external writes automatically.
+
 **You own the diagnosis. Instrument the live process, don't theorize from source.** The deliverable is a cited diagnosis, not a fix.
 
 1. Capture the live signal on the matching surface via the control skill: a CPU profile for a spinning process, a heap snapshot for a leak, a CDP trace for a visual glitch. A real artifact, not a guess.

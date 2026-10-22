@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Migrate Callers Then Delete Legacy APIs
 
+Apply within [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md).
+
 - Update tests to assert the new contract, and delete tests that only protect pre-refactor implementation details
 
 **When this applies:**

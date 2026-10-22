@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Foundational Thinking
 
+Apply within [Pi + herdr runtime](../poteto-mode/references/pi-herdr.md).
+
 **Structural decisions** protect option value. **Code-level decisions** protect simplicity.
 
 **Data structures first.** Get the data shape right before writing logic. Define core types early, trace every access pattern, and choose structures that match the dominant paths.

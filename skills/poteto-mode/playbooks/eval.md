@@ -1,5 +1,7 @@
 ### Eval
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. All required candidates are visible Pi workers created by the coordinator. Isolate each writer and keep evidence in its worktree. Read only this task's Pi transcripts. Keep results local unless publication is authorized.
+
 **You own the experiment design. Plan, blind, run, synthesize.**
 
 **Non-negotiables for blinding:**

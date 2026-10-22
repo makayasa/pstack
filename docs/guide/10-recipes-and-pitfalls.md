@@ -1,5 +1,7 @@
 # Recipes and pitfalls
 
+Translate examples to Pi's `/skill:name` and follow [Pi + herdr runtime](../../skills/poteto-mode/references/pi-herdr.md). Required workers stay visible in herdr. No cloud agents, native subagent fallback, Custom Modes, or `/loop` are provided. A missing model blocks its seat. Publication and destructive actions remain permission-gated.
+
 Prompts worth copying, then the mistakes everyone makes once. Swap in your own paths and finish conditions. The recipes are deliberately informal. That's how they get typed in practice, and the skills read intent fine.
 
 ![She tastes a finished dish while robots cook from a recipe box, with pinned cards reading /how, /tdd, and /loop above the counter.](./images/recipes.jpg)

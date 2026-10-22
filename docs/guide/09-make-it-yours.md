@@ -1,5 +1,7 @@
 # Make it yours
 
+Follow [Pi + herdr runtime](../../skills/poteto-mode/references/pi-herdr.md). Use `/skill:name`, `~/.agents/pstack-models.md`, and Pi-discovered model IDs with separate thinking levels. A missing mapping requires setup, not a fallback. Review upstream selectively rather than synchronizing the mirror. Cursor Custom Modes and Automations are unsupported.
+
 poteto-mode is one person's style. The playbooks, routing, and model roles underneath it work just as well with yours. This page covers generating a personal mode, capturing lessons from a session, fixing the repo so agents stop repeating mistakes, authoring a focused skill, and testing a skill change before you trust it.
 
 Start smaller than you think. You don't need many skills on day one, or even this whole plugin. Prompt plainly, watch where agents fail, and add a skill or a check when the same failure shows up twice.

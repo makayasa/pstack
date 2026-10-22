@@ -1,5 +1,7 @@
 ### Hillclimb
 
+Read [Pi + herdr runtime](../references/pi-herdr.md) first. Use configured Pi models and visible herdr workers with isolated writing worktrees. Keep independent experiments concurrent and evidence tied to exact commits. No hardcoded fallback model or automatic remote write.
+
 **You own the metric and the experiment's integrity. Supervise and review. Delegate the attempts.** For sustained, iterative improvement of one measurable thing against a target. A one-off fix is Bug fix or Perf issue. This is the loop.
 
 Core discipline: one change, one measurement, keep or revert. Never stack untested changes, and never claim a win from code inspection (the **prove-it-works** principle skill).
